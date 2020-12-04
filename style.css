@@ -72,3 +72,6 @@
   .card__flip {
     transform: rotateY(180deg);
 }
+.disabled {
+    pointer-events: none;
+}
