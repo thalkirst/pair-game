@@ -11,13 +11,15 @@ const frontPictures = [
     'images/butterfly.jpg'
 ]
 
-let cardElements= document.querySelectorAll(".card");
+let cardElements = document.querySelectorAll(".card");
 let cardElementsArray = [...cardElements];
+const clock = document.querySelector(".table__clock");
+
 let openedCards = [];
 let matchedCards = [];
-let clock = document.querySelector(".table__clock");
-let second = 0,
-    minute = 0,
+
+let second,
+    minute,
     interval;
 let timer = false;
 
@@ -46,9 +48,9 @@ function displayCard() {
 function cardOpen(card) {
     openedCards.push(card);
     let len = openedCards.length;
-    if(len === 2) {
-    
-        if(openedCards[0].type === openedCards[1].type) {
+    if (len === 2) {
+
+        if (openedCards[0].type === openedCards[1].type) {
             matched();
         } else {
             unmatched();
@@ -57,28 +59,21 @@ function cardOpen(card) {
 }
 
 function matched() {
-    openedCards[0].classList.add("match");
-    openedCards[1].classList.add("match");
     matchedCards.push(openedCards[0]);
     matchedCards.push(openedCards[1]);
     openedCards = [];
-    if(matchedCards.length == 10) {
+    if (matchedCards.length == 10) {
         endGame();
     }
 }
 
 function unmatched() {
-    openedCards[0].classList.add("unmatched");
-    openedCards[1].classList.add("unmatched");
     disable();
-    setTimeout(function() {
-        openedCards[0].classList.remove("unmatched");
-        openedCards[1].classList.remove("unmatched");
+    setTimeout(function () {
         openedCards[0].children[0].classList.remove('card__flip');
         openedCards[1].children[0].classList.remove('card__flip');
         enable();
         openedCards = [];
-        
     }, 1100)
 }
 
@@ -91,7 +86,7 @@ function disable() {
 function enable() {
     cardElementsArray.filter((card) => {
         card.classList.remove('disabled');
-        for(let i=0; i<matchedCards.length; i++) {
+        for (let i = 0; i < matchedCards.length; i++) {
             matchedCards[i].classList.add('disabled');
         }
     })
@@ -99,11 +94,11 @@ function enable() {
 
 function startTimer() {
     timer = true;
-    interval = setInterval(function(){
+    interval = setInterval(function () {
         second = addZero(second);
         clock.textContent = `${minute}:${second}`;
         second++;
-        if(second == 60) {
+        if (second == 60) {
             minute++;
             second = 0;
         }
@@ -127,8 +122,11 @@ function addZero(i) {
 
 function startGame() {
     clock.textContent = `0:00`;
-    cardElements.forEach(item => item.classList.remove("match", "disabled"));
+    timer = false;
+    second = 0,
+    minute = 0,
+    cardElements.forEach(item => item.classList.remove("disabled"));
     cardElements.forEach(item => item.children[0].classList.remove("card__flip"));
     cardElementsArray.forEach(item => item.addEventListener('click', displayCard));
- 
+
 }
