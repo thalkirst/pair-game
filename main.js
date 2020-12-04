@@ -39,8 +39,6 @@ function displayCard() {
         startTimer();
     }
     this.children[0].classList.toggle('card__flip');
-    this.classList.toggle("open");
-    this.classList.toggle("show");
     this.classList.toggle("disabled");
     cardOpen(this);
 }
@@ -61,8 +59,6 @@ function cardOpen(card) {
 function matched() {
     openedCards[0].classList.add("match");
     openedCards[1].classList.add("match");
-    openedCards[0].classList.remove("show", "open");
-    openedCards[1].classList.remove("show", "open");
     matchedCards.push(openedCards[0]);
     matchedCards.push(openedCards[1]);
     openedCards = [];
@@ -76,8 +72,8 @@ function unmatched() {
     openedCards[1].classList.add("unmatched");
     disable();
     setTimeout(function() {
-        openedCards[0].classList.remove("show", "open", "unmatched");
-        openedCards[1].classList.remove("show", "open", "unmatched");
+        openedCards[0].classList.remove("unmatched");
+        openedCards[1].classList.remove("unmatched");
         openedCards[0].children[0].classList.remove('card__flip');
         openedCards[1].children[0].classList.remove('card__flip');
         enable();
@@ -131,7 +127,7 @@ function addZero(i) {
 
 function startGame() {
     clock.textContent = `0:00`;
-    cardElements.forEach(item => item.classList.remove("show", "open", "match", "disabled"));
+    cardElements.forEach(item => item.classList.remove("match", "disabled"));
     cardElements.forEach(item => item.children[0].classList.remove("card__flip"));
     cardElementsArray.forEach(item => item.addEventListener('click', displayCard));
  
