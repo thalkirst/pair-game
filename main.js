@@ -1,4 +1,4 @@
-const frontPictures = [
+let frontPictures = [
     'images/bee.jpg',
     'images/spider.jpg',
     'images/bee.jpg',
@@ -11,16 +11,16 @@ const frontPictures = [
     'images/butterfly.jpg'
 ]
 
+
+
 let cardElements = document.querySelectorAll(".card");
 let cardElementsArray = [...cardElements];
 const clock = document.querySelector(".table__clock");
-
 let openedCards = [];
 let matchedCards = [];
-
 let second,
-    minute,
-    interval;
+minute,
+interval;
 let timer = false;
 
 
@@ -31,10 +31,14 @@ function fillCards() {
         cardElements[i].type = frontPictures[i];
     }
 }
-fillCards();
 
-startGame();
-
+function removeCards() {
+    let card__backs = document.querySelectorAll(".card__back");
+    for (i = 0; i < card__backs.length; i++) {
+        card__backs[i].removeChild(card__backs[i].firstChild);
+        cardElements[i].type = frontPictures[i];
+    }
+}
 
 function displayCard() {
     if (timer === false) {
@@ -118,15 +122,37 @@ function addZero(i) {
         i = "0" + i;
     }
     return i;
+
 }
+function shuffle(array) {
+    let currentIndex = array.length, temporaryValue, randomIndex;
+    while (0 !== currentIndex) {
+  
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+    console.log(array);
+    return array;
+  }
 
 function startGame() {
     clock.textContent = `0:00`;
     timer = false;
     second = 0,
     minute = 0,
+    shuffle(frontPictures);
+    let card__back = document.querySelector(".card__back");
+    if (card__back.hasChildNodes()) {
+        console.log('reset')
+        removeCards();
+    }
     cardElements.forEach(item => item.classList.remove("disabled"));
     cardElements.forEach(item => item.children[0].classList.remove("card__flip"));
     cardElementsArray.forEach(item => item.addEventListener('click', displayCard));
-
+    fillCards();
 }
+
+startGame();
